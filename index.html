@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrumental Wave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #e8e8e8;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background-color: #e8e8e8;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* 
+        INSTRUCTIONS: Replace these example URLs with your actual GitHub image URLs
+        
+        Example format:
+        https://yourusername.github.io/your-repo-name/image-name.png
+        
+        OR use raw GitHub URLs:
+        https://raw.githubusercontent.com/yourusername/your-repo/main/image-name.png
+        */
+            width: 50px;
+            height: 50px;
+            background-image: url('YOUR_LOGO_IMAGE_URL_HERE');
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c2c2c;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2c2c2c;
+        }
+
+        .main-content {
+            padding: 60px 40px 40px;
+        }
+
+        .welcome-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #2c2c2c;
+            text-align: left;
+            margin-bottom: 80px;
+            letter-spacing: -1px;
+        }
+
+        .instruments-section {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .instruments-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            position: relative;
+        }
+
+        .instrument-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 5;
+        }
+
+        .instrument-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .instrument-image {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .guitar-img {
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .guitar-img::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 280px;
+            background-image: url('YOUR_GUITAR_IMAGE_URL_HERE');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .piano-img {
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .piano-img::before {
+            content: '';
+            position: absolute;
+            width: 220px;
+            height: 80px;
+            background-image: url('YOUR_PIANO_IMAGE_URL_HERE');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .drums-img {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drums-img::before {
+            content: '';
+            position: absolute;
+            width: 240px;
+            height: 200px;
+            background-image: url('YOUR_DRUMS_IMAGE_URL_HERE');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .instrument-name {
+            font-size: 36px;
+            font-weight: 900;
+            color: #2c2c2c;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .floating-background {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            background: rgba(180, 180, 180, 0.4);
+            border-radius: 50%;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .page-number {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: #2c2c2c;
+            color: white;
+            width: 60px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .nav-links {
+                gap: 20px;
+            }
+            
+            .instruments-grid {
+                flex-direction: column;
+                gap: 60px;
+            }
+            
+            .welcome-title {
+                font-size: 28px;
+                text-align: center;
+            }
+            
+            .instrument-image {
+                width: 220px;
+                height: 220px;
+            }
+            
+            .floating-background {
+                width: 260px;
+                height: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <div class="logo-text">INSTRUMENTALWAVE.CO</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#instruments">INSTRUMENTS</a></li>
+            <li><a href="#others">OTHERS</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <h1 class="welcome-title">WELCOME TO INSTRUMENTAL WAVE</h1>
+        
+        <section class="instruments-section">
+            <div class="instruments-grid" id="instrumentsGrid">
+                <div class="floating-background" id="floatingBg"></div>
+                
+                <div class="instrument-card" data-instrument="guitar">
+                    <div class="instrument-image guitar-img"></div>
+                    <h2 class="instrument-name">GUITAR</h2>
+                </div>
+
+                <div class="instrument-card" data-instrument="piano">
+                    <div class="instrument-image piano-img"></div>
+                    <h2 class="instrument-name">PIANO</h2>
+                </div>
+
+                <div class="instrument-card" data-instrument="drums">
+                    <div class="instrument-image drums-img"></div>
+                    <h2 class="instrument-name">DRUM SET</h2>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="page-number">01</div>
+
+    <script>
+        const floatingBg = document.getElementById('floatingBg');
+        const instrumentCards = document.querySelectorAll('.instrument-card');
+        const instrumentsGrid = document.getElementById('instrumentsGrid');
+
+        // Initially hide the background
+        floatingBg.style.opacity = '0';
+
+        // Move background to instrument on hover
+        instrumentCards.forEach((card, index) => {
+            card.addEventListener('mouseenter', () => {
+                const cardRect = card.getBoundingClientRect();
+                const gridRect = instrumentsGrid.getBoundingClientRect();
+                
+                const cardCenterX = cardRect.left - gridRect.left + cardRect.width / 2;
+                const cardCenterY = cardRect.top - gridRect.top + cardRect.height / 2;
+                
+                floatingBg.style.opacity = '1';
+                floatingBg.style.left = (cardCenterX - 160) + 'px';
+                floatingBg.style.top = (cardCenterY - 160) + 'px';
+                floatingBg.style.transform = 'translate(0, 0) scale(1)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                floatingBg.style.opacity = '0';
+            });
+        });
+
+        // Hide background when leaving the grid area
+        instrumentsGrid.addEventListener('mouseleave', () => {
+            floatingBg.style.opacity = '0';
+        });
+
+        // Add click interactions
+        instrumentCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const instrumentName = card.querySelector('.instrument-name').textContent;
+                
+                // Add a subtle click animation
+                card.style.transform = 'translateY(-5px) scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = 'translateY(-5px) scale(1)';
+                }, 150);
+                
+                console.log(`${instrumentName} clicked!`);
+            });
+        });
+
+        // Smooth navigation link interactions
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('href').substring(1);
+                console.log(`Navigating to: ${target}`);
+            });
+        });
+    </script>
+</body>
+</html>
